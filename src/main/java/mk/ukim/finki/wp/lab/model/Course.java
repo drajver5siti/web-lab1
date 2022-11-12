@@ -7,13 +7,18 @@ public class Course {
     private Long courseId;
     private String name;
     private String description;
+    private Teacher teacher;
     private List<Student> students;
 
-    public Course(Long courseId, String name, String description, List<Student> students) {
-        this.courseId = courseId;
+    public Course(
+            String name,
+            String description,
+            Teacher teacher
+    ) {
+        this.courseId = (long) (Math.random() * 10000);
         this.name = name;
         this.description = description;
-        this.students = students;
+        this.teacher = teacher;
     }
 
     public Long getCourseId() {
@@ -32,11 +37,24 @@ public class Course {
         return students;
     }
 
-    public void addStudent(Student student)
-    {
+    public Teacher getTeacher() { return teacher; }
+
+    public void addStudent(Student student) {
         if(!this.students.contains(student)) {
             this.students.add(student);
         }
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
 
     @Override
