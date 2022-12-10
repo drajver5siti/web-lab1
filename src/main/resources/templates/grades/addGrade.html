@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Grades</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <form action="/grades/add" method="POST">
+                <div class="form-group">
+                    <label th:for="courseId">Course</label>
+                    <select name="courseId" class="form-control">
+                        <option th:each="course: ${courses}"
+                                th:value="${course.getId()}"
+                                th:text="${course.getName()}">
+                        </option>
+                    </select>
+                </div>
+                <div>
+                    <label th:for="studentId">Student</label>
+                    <select name="studentId" class="form-control">
+                        <option th:each="">
+
+                        </option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

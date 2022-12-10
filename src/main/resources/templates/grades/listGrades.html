@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <header>
+        <h1>Grades List</h1>
+    </header>
+
+    <main>
+        <div th:if="${grades.size() > 0}">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Student</th>
+                        <th>Grade</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="grade: ${grades}">
+                        <td th:text="${grade.getCourse().getName()}"></td>
+                        <td th:text="${grade.getStudent().getFullName()}"></td>
+                        <td th:text="${grade.getGrade()}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

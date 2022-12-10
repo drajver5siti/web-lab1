@@ -18,9 +18,9 @@ public interface CourseService {
 
     Optional<Course> findByName(String name);
 
-    Course saveCourse(String name, String description, Long teacherId);
+    Optional<Course> saveCourse(String name, String description, Long teacherId);
 
-    Course editCourse(Long courseId, String name, String description, Long teacherId);
+    Optional<Course> editCourse(Long courseId, String name, String description, Long teacherId);
 
     void deleteCourse(Long courseId);
 }

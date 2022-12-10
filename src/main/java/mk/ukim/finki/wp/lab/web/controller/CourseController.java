@@ -2,7 +2,6 @@ package mk.ukim.finki.wp.lab.web.controller;
 
 import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Teacher;
-import mk.ukim.finki.wp.lab.repository.TeacherRepository;
 import mk.ukim.finki.wp.lab.service.CourseService;
 import mk.ukim.finki.wp.lab.service.TeacherService;
 import org.springframework.stereotype.Controller;
@@ -41,7 +40,7 @@ public class CourseController {
                 .sorted((o1, o2) -> o1.getName().compareTo(o2.getName()))
                 .collect(Collectors.toList());
         model.addAttribute("courses", courses);
-        return "listCourses";
+        return "courses/listCourses";
     }
 
     @GetMapping("/add")
@@ -56,7 +55,7 @@ public class CourseController {
 
         List<Teacher> teachers = this.teachers.findAll();
         model.addAttribute("teachers", teachers);
-        return "add-course";
+        return "courses/add-course";
     }
 
     @GetMapping("/edit/{id}")
@@ -71,7 +70,7 @@ public class CourseController {
             model.addAttribute("course", course);
             model.addAttribute("teachers", teachers);
 
-            return "add-course";
+            return "courses/add-course";
         }
 
         return "redirect:/courses?error=CourseNotFound";
@@ -86,7 +85,7 @@ public class CourseController {
             @RequestParam Long teacherId
     ) {
         Optional<Course> exists = this.courses.findByName(name);
-        if(exists.isPresent() && !exists.get().getCourseId().equals(id)) {
+        if(exists.isPresent() && !exists.get().getId().equals(id)) {
             return "redirect:/courses/add?error=CourseAlreadyExists";
         }
         if(id == null) {

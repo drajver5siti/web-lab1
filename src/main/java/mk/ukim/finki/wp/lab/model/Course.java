@@ -1,28 +1,41 @@
 package mk.ukim.finki.wp.lab.model;
 
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class Course {
-    private Long courseId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private String description;
+
+    @OneToOne
     private Teacher teacher;
+
+    @ManyToMany
     private List<Student> students;
+
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+    protected Course() {}
 
     public Course(
             String name,
             String description,
             Teacher teacher
     ) {
-        this.courseId = (long) (Math.random() * 10000);
         this.name = name;
         this.description = description;
         this.teacher = teacher;
     }
 
-    public Long getCourseId() {
-        return courseId;
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -62,11 +75,11 @@ public class Course {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
-        return Objects.equals(courseId, course.courseId);
+        return Objects.equals(id, course.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(courseId);
+        return Objects.hash(id);
     }
 }

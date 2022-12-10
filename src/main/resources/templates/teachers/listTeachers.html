@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <title>Teachers</title>
+</head>
+<body>
+    <header>
+        <h1>Teachers List</h1>
+    </header>
+    <main>
+        <div th:if="${teachers.size() > 0}">
+            <div class="table-responsive">
+                <table class="table table-stripped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Surname</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="teacher: ${teachers}">
+                            <td th:text="${teacher.getName()}"></td>
+                            <td th:text="${teacher.getSurname()}"></td>
+                            <td>
+                                <a th:href="@{'/teachers/edit/{id}' (id=${teacher.getId()})}">
+                                    <i class="fa fa-trash">Edit</i>
+                                </a>
+                                <form th:method="DELETE" th:action="@{'/teachers/delete/{id}' (id=${teacher.getId()})}">
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash">Delete</i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+            <a href="/teachers/add">Add Teacher</a>
+        </div>
+    </main>
+
+</body>
+</html>

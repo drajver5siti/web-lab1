@@ -4,6 +4,7 @@ import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Student;
 import mk.ukim.finki.wp.lab.model.Teacher;
 import mk.ukim.finki.wp.lab.model.exceptions.CourseNotFoundException;
+import mk.ukim.finki.wp.lab.model.exceptions.StudentNotFoundException;
 import mk.ukim.finki.wp.lab.model.exceptions.TeacherNotFoundException;
 import mk.ukim.finki.wp.lab.repository.CourseRepository;
 import mk.ukim.finki.wp.lab.repository.StudentRepository;
@@ -11,6 +12,7 @@ import mk.ukim.finki.wp.lab.repository.TeacherRepository;
 import mk.ukim.finki.wp.lab.service.CourseService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,17 +45,18 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course saveCourse(String name, String description, Long teacherId) {
+    public Optional<Course> saveCourse(String name, String description, Long teacherId) {
 
         Teacher teacher = this.teachers
                 .findById(teacherId)
                 .orElseThrow(() -> new TeacherNotFoundException(teacherId));
 
-        return this.courses.saveCourse(new Course(name, description, teacher));
+        return Optional.of(this.courses.save(new Course(name, description, teacher)));
     }
 
     @Override
-    public Course editCourse(Long courseId, String name, String description, Long teacherId) {
+    @Transactional
+    public Optional<Course> editCourse(Long courseId, String name, String description, Long teacherId) {
 
         Course course = this.courses
                 .findById(courseId)
@@ -68,7 +71,7 @@ public class CourseServiceImpl implements CourseService {
         course.setDescription(description);
         course.setTeacher(teacher);
 
-        return this.courses.saveCourse(course);
+        return Optional.of(this.courses.save(course));
     }
 
     @Override
@@ -77,12 +80,17 @@ public class CourseServiceImpl implements CourseService {
                 .findById(courseId)
                 .orElseThrow(() -> new CourseNotFoundException(courseId));
 
-        this.courses.deleteCourse(course);
+        this.courses.delete(course);
     }
 
     @Override
     public List<Student> listStudentsByCourse(Long courseId) {
-        return this.courses.findAllStudentsByCourse(courseId);
+        Course c = this.courses
+                .findById(courseId)
+                .orElseThrow(() -> new CourseNotFoundException(courseId));
+
+        return this.students.findAll();
+//        return this.courses.findAllStudentsByCourse(c);
     }
 
     @Override
@@ -92,14 +100,18 @@ public class CourseServiceImpl implements CourseService {
                 .findById(courseId)
                 .orElseThrow(() -> new CourseNotFoundException(courseId));
 
-        return this.courses.addStudentToCourse(
-                this.students.findByUsername(username),
-                course
-        );
-    }
+        Student student = this.students
+                .findByUsername(username)
+                .orElseThrow(() -> new StudentNotFoundException(username));
+
+
+        course.addStudent(student);
+
+        return course;
+   }
 
     @Override
     public List<Course> findAll() {
-        return this.courses.findAllCourses();
+        return this.courses.findAll();
     }
 }

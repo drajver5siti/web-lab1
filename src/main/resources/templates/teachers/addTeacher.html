@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <form action="/teachers/add" method="POST">
+                <input id="id" type="hidden" name="id" th:value="(${teacher} != null ? ${teacher.getId()} : '')">
+                <div class="form-group">
+                    <label for="name">Teacher Name</label>
+                    <input type="text"
+                           class="form-control"
+                           id="name"
+                           name="name"
+                           th:value="(${teacher} != null ? ${teacher.getName()} : '')"
+                           required>
+                </div>
+                <div class="form-group">
+                    <label for="surname">Teacher Surname</label>
+                    <input type="text"
+                           class="form-control"
+                           id="surname"
+                           name="surname"
+                           th:value="(${teacher} != null ? ${teacher.getSurname()} : '')"
+                           required>
+                </div>
+                <th:block th:if="${hasError} == true">
+                    <p th:text="${error}"></p>
+                </th:block>
+                <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+                <a type="button" class="btn btn-primary" href="/teachers">Back</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

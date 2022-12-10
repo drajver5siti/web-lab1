@@ -18,17 +18,19 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> listAll() {
-        return this.students.findAllStudents();
+        return this.students.findAll();
     }
 
     @Override
     public List<Student> searchByNameOrSurname(String text) {
-        return this.students.findAllByNameOrSurname(text);
+        return this.students.findAll();
+//        return this.students.findAllByNameOrSurnameLike(text);
     }
 
     @Override
     public Student save(String username, String password, String name, String surname) {
-        return this.students.add(
+
+        return this.students.save(
                 new Student(
                         username,
                         password,
@@ -36,16 +38,5 @@ public class StudentServiceImpl implements StudentService {
                         surname
                 )
         );
-    }
-
-    @Override
-    public boolean hasStudent(String username) {
-        for(Student s : this.students.findAllStudents())
-        {
-            if(s.getUsername().equals(username)) {
-                return  true;
-            }
-        }
-        return false;
     }
 }
